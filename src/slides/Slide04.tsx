@@ -20,13 +20,13 @@ export function Slide04() {
               style={{
                 width: '76px',
                 height: '76px',
-                borderRadius: '20px',
-                background: 'var(--paper-2)',
-                border: '2px solid var(--line)',
+                borderRadius: '22px',
+                background: 'var(--ember-soft)',
+                border: '1.5px solid rgba(224, 78, 31, 0.25)',
                 display: 'grid',
                 placeItems: 'center',
                 color: 'var(--ember)',
-                boxShadow: 'var(--shadow-1)',
+                boxShadow: '0 8px 24px -6px var(--ember-glow)',
               }}
             >
               <Database size={42} strokeWidth={2.2} />
@@ -53,13 +53,14 @@ export function Slide04() {
           <div
             style={{
               marginTop: 'auto',
-              padding: '16px 20px',
+              padding: '16px 22px',
               borderRadius: '16px',
-              background: 'var(--paper)',
-              border: '1px solid var(--line)',
+              background: 'rgba(248, 244, 238, 0.9)',
+              border: '1.5px solid var(--card-border)',
               fontFamily: 'var(--font-mono)',
               fontSize: '15px',
               color: 'var(--brown)',
+              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.8)',
             }}
           >
             Emphasis: Tables, keys, schema constraints & relational integrity.
@@ -73,13 +74,13 @@ export function Slide04() {
               style={{
                 width: '76px',
                 height: '76px',
-                borderRadius: '20px',
-                background: 'var(--paper-3)',
-                border: '2px solid var(--line)',
+                borderRadius: '22px',
+                background: 'var(--sand)',
+                border: '1.5px solid var(--tan)',
                 display: 'grid',
                 placeItems: 'center',
-                color: 'var(--brown)',
-                boxShadow: 'var(--shadow-1)',
+                color: 'var(--brown-deep)',
+                boxShadow: '0 8px 24px -6px rgba(122, 74, 46, 0.15)',
               }}
             >
               <Boxes size={42} strokeWidth={2.2} />
@@ -106,13 +107,14 @@ export function Slide04() {
           <div
             style={{
               marginTop: 'auto',
-              padding: '16px 20px',
+              padding: '16px 22px',
               borderRadius: '16px',
-              background: 'var(--paper)',
-              border: '1px solid var(--line)',
+              background: 'rgba(248, 244, 238, 0.9)',
+              border: '1.5px solid var(--card-border)',
               fontFamily: 'var(--font-mono)',
               fontSize: '15px',
               color: 'var(--brown)',
+              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.8)',
             }}
           >
             Emphasis: Classes, methods, message passing & encapsulation.

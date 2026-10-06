@@ -14,22 +14,22 @@ export function Slide13() {
           lines={
             <>
               {/* Root drop down to split */}
-              <Connector points={[[680, 80], [680, 140]]} width={3} delay={0.5} />
+              <Connector points={[[680, 80], [680, 140]]} width={3} delay={0.5} flow />
               {/* Horizontal crossbar */}
               <Connector points={[[340, 140], [1020, 140]]} width={3} delay={0.6} />
               {/* Drops into Structural & Behavioral */}
-              <Connector points={[[340, 140], [340, 190]]} arrow="end" width={3} delay={0.7} />
-              <Connector points={[[1020, 140], [1020, 190]]} arrow="end" width={3} delay={0.7} />
+              <Connector points={[[340, 140], [340, 190]]} arrow="end" width={3} delay={0.7} flow={{ dur: 2.2, r: 5 }} />
+              <Connector points={[[1020, 140], [1020, 190]]} arrow="end" width={3} delay={0.7} flow={{ dur: 2.2, r: 5 }} />
 
               {/* Structural -> Class Diagram */}
-              <Connector points={[[340, 260], [340, 340]]} arrow="end" width={3} delay={0.9} />
+              <Connector points={[[340, 260], [340, 340]]} arrow="end" width={3} delay={0.9} flow={{ dur: 2.0, r: 5 }} />
 
               {/* Behavioral -> 3 sub-diagrams */}
-              <Connector points={[[1020, 260], [1020, 310]]} width={3} delay={0.9} />
+              <Connector points={[[1020, 260], [1020, 310]]} width={3} delay={0.9} flow />
               <Connector points={[[780, 310], [1260, 310]]} width={3} delay={1.0} />
-              <Connector points={[[780, 310], [780, 360]]} arrow="end" width={3} delay={1.1} />
-              <Connector points={[[1020, 310], [1020, 360]]} arrow="end" width={3} delay={1.1} />
-              <Connector points={[[1260, 310], [1260, 360]]} arrow="end" width={3} delay={1.1} />
+              <Connector points={[[780, 310], [780, 360]]} arrow="end" width={3} delay={1.1} flow={{ dur: 2.0, r: 5 }} />
+              <Connector points={[[1020, 310], [1020, 360]]} arrow="end" width={3} delay={1.1} flow={{ dur: 2.0, r: 5 }} />
+              <Connector points={[[1260, 310], [1260, 360]]} arrow="end" width={3} delay={1.1} flow={{ dur: 2.0, r: 5 }} />
             </>
           }
         >

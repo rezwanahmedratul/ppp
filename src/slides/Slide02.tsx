@@ -16,21 +16,21 @@ export function Slide02() {
         lines={
           <>
             {/* Trunk line from PIZZA ORDER down to branch fork */}
-            <Connector points={[[700, 100], [700, 150]]} delay={0.4} width={3} />
+            <Connector points={[[700, 100], [700, 150]]} delay={0.4} width={3} flow />
             {/* Horizontal distribution bar */}
             <Connector points={[[250, 150], [1150, 150]]} delay={0.5} width={3} />
             {/* Drop lines to Level 1 nodes */}
-            <Connector points={[[250, 150], [250, 200]]} arrow="end" delay={0.6} width={3} />
-            <Connector points={[[700, 150], [700, 200]]} arrow="end" delay={0.6} width={3} />
-            <Connector points={[[1150, 150], [1150, 200]]} arrow="end" delay={0.6} width={3} />
+            <Connector points={[[250, 150], [250, 200]]} arrow="end" delay={0.6} width={3} flow={{ dur: 2.4, r: 5 }} />
+            <Connector points={[[700, 150], [700, 200]]} arrow="end" delay={0.6} width={3} flow={{ dur: 2.4, r: 5 }} />
+            <Connector points={[[1150, 150], [1150, 200]]} arrow="end" delay={0.6} width={3} flow={{ dur: 2.4, r: 5 }} />
 
             {/* Sub-trunk from ORDER down to second branch fork */}
-            <Connector points={[[700, 280], [700, 330]]} delay={0.8} width={3} />
+            <Connector points={[[700, 280], [700, 330]]} delay={0.8} width={3} flow />
             {/* Horizontal sub-bar */}
             <Connector points={[[520, 330], [880, 330]]} delay={0.9} width={3} />
             {/* Drop lines to Level 2 nodes */}
-            <Connector points={[[520, 330], [520, 380]]} arrow="end" delay={1.0} width={3} />
-            <Connector points={[[880, 330], [880, 380]]} arrow="end" delay={1.0} width={3} />
+            <Connector points={[[520, 330], [520, 380]]} arrow="end" delay={1.0} width={3} flow={{ dur: 2.2, r: 5 }} />
+            <Connector points={[[880, 330], [880, 380]]} arrow="end" delay={1.0} width={3} flow={{ dur: 2.2, r: 5 }} />
           </>
         }
       >

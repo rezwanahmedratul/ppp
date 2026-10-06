@@ -28,6 +28,7 @@ export function Slide06() {
                 arrow="end"
                 delay={0.7}
                 label={{ text: 'contains', x: 735, y: 300, anchor: 'start' }}
+                flow
               />
 
               {/* ORDER LINE -> PIZZA */}
@@ -36,6 +37,7 @@ export function Slide06() {
                 arrow="end"
                 delay={0.9}
                 label={{ text: 'refers to', x: 465, y: 385 }}
+                flow
               />
 
               {/* ORDER -> PAYMENT */}
@@ -44,6 +46,7 @@ export function Slide06() {
                 arrow="end"
                 delay={0.8}
                 label={{ text: 'settles', x: 920, y: 135 }}
+                flow
               />
 
               {/* ORDER -> DELIVERY */}
@@ -52,6 +55,7 @@ export function Slide06() {
                 arrow="end"
                 delay={1.0}
                 label={{ text: 'dispatches', x: 970, y: 375 }}
+                flow
               />
             </>
           }
@@ -153,14 +157,15 @@ export function Slide06() {
           <Reveal delay={1.1} y={10}>
             <div
               style={{
-                padding: '12px 24px',
-                borderRadius: '16px',
-                background: '#ffffff',
-                border: '1.5px solid var(--line)',
+                padding: '12px 26px',
+                borderRadius: '999px',
+                background: 'rgba(255, 255, 255, 0.88)',
+                backdropFilter: 'blur(12px)',
+                border: '1.5px solid var(--card-border)',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '12px',
-                boxShadow: 'var(--shadow-1)',
+                boxShadow: 'var(--shadow-card)',
               }}
             >
               <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: 'var(--ember)' }}>Entity</span>
@@ -172,14 +177,15 @@ export function Slide06() {
           <Reveal delay={1.2} y={10}>
             <div
               style={{
-                padding: '12px 24px',
-                borderRadius: '16px',
-                background: '#ffffff',
-                border: '1.5px solid var(--line)',
+                padding: '12px 26px',
+                borderRadius: '999px',
+                background: 'rgba(255, 255, 255, 0.88)',
+                backdropFilter: 'blur(12px)',
+                border: '1.5px solid var(--card-border)',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '12px',
-                boxShadow: 'var(--shadow-1)',
+                boxShadow: 'var(--shadow-card)',
               }}
             >
               <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: 'var(--ember)' }}>Attribute</span>
@@ -191,14 +197,15 @@ export function Slide06() {
           <Reveal delay={1.3} y={10}>
             <div
               style={{
-                padding: '12px 24px',
-                borderRadius: '16px',
-                background: '#ffffff',
-                border: '1.5px solid var(--line)',
+                padding: '12px 26px',
+                borderRadius: '999px',
+                background: 'rgba(255, 255, 255, 0.88)',
+                backdropFilter: 'blur(12px)',
+                border: '1.5px solid var(--card-border)',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '12px',
-                boxShadow: 'var(--shadow-1)',
+                boxShadow: 'var(--shadow-card)',
               }}
             >
               <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: 'var(--ember)' }}>Relationship</span>

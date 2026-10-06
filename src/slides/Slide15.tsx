@@ -30,6 +30,7 @@ export function Slide15() {
                 arrow="end"
                 delay={0.7}
                 label={{ text: 'has', x: 930, y: 135 }}
+                flow
               />
 
               {/* Customer -> Payment */}
@@ -38,6 +39,7 @@ export function Slide15() {
                 arrow="end"
                 delay={0.9}
                 label={{ text: 'submits', x: 420, y: 375 }}
+                flow
               />
 
               {/* Order -> Payment */}
@@ -46,6 +48,7 @@ export function Slide15() {
                 arrow="end"
                 delay={0.8}
                 label={{ text: 'settled by', x: 770, y: 285, anchor: 'start' }}
+                flow
               />
             </>
           }

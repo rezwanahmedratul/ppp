@@ -46,11 +46,12 @@ export function Slide05() {
                     style={{
                       width: '64px',
                       height: '64px',
-                      borderRadius: '16px',
-                      background: idx === 0 ? 'var(--paper-2)' : idx === 1 ? 'var(--ember-soft)' : 'var(--paper-3)',
-                      color: idx === 1 ? 'var(--ember)' : 'var(--ink)',
+                      borderRadius: '18px',
+                      background: idx === 0 ? 'var(--sand)' : idx === 1 ? 'var(--ember-soft)' : 'var(--paper-3)',
+                      color: idx === 1 ? 'var(--ember)' : idx === 0 ? 'var(--brown-deep)' : 'var(--ink)',
                       display: 'grid',
                       placeItems: 'center',
+                      boxShadow: idx === 1 ? '0 8px 24px -6px var(--ember-glow)' : '0 4px 12px rgba(0,0,0,0.05)',
                     }}
                   >
                     <Icon size={32} />
@@ -63,10 +64,11 @@ export function Slide05() {
                           <span
                             key={t}
                             style={{
-                              padding: '4px 12px',
+                              padding: '4px 14px',
                               borderRadius: '999px',
-                              background: 'var(--paper)',
-                              border: '1px solid var(--line)',
+                              background: 'rgba(255, 255, 255, 0.9)',
+                              border: '1px solid var(--card-border)',
+                              boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
                               fontFamily: 'var(--font-mono)',
                               fontSize: '13px',
                               fontWeight: 600,
@@ -94,7 +96,7 @@ export function Slide05() {
 
               {idx < 2 && (
                 <Reveal delay={item.delay + 0.15} y={0} style={{ alignSelf: 'center' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--ember)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--ember)', animation: 'floatGentle 2.5s ease-in-out infinite' }}>
                     <ArrowDown size={24} strokeWidth={2.5} />
                   </div>
                 </Reveal>

@@ -29,6 +29,7 @@ export function Slide08() {
                 arrow="end"
                 delay={0.7}
                 label={{ text: 'Save order record', x: 890, y: 80 }}
+                flow={{ dur: 2.3, r: 5 }}
               />
 
               {/* Process Order -> Payment Service */}
@@ -37,6 +38,7 @@ export function Slide08() {
                 arrow="end"
                 delay={0.8}
                 label={{ text: 'Payment payload', x: 890, y: 215 }}
+                flow={{ dur: 2.3, r: 5 }}
               />
 
               {/* Process Order -> Delivery System */}
@@ -45,6 +47,7 @@ export function Slide08() {
                 arrow="end"
                 delay={0.9}
                 label={{ text: 'Dispatch ticket', x: 740, y: 290, anchor: 'start' }}
+                flow={{ dur: 2.0, r: 5 }}
               />
 
               {/* Delivery System -> Customer */}

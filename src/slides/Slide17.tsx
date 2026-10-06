@@ -114,14 +114,15 @@ export function Slide17() {
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '16px',
-                padding: '12px 32px',
+                padding: '12px 34px',
                 borderRadius: '999px',
-                background: 'var(--ink)',
+                background: 'var(--grad-ink)',
+                border: '1px solid rgba(255, 255, 255, 0.15)',
                 color: 'var(--paper)',
-                boxShadow: 'var(--shadow-2)',
+                boxShadow: 'var(--shadow-3)',
               }}
             >
-              <Sparkles size={18} color="var(--ember)" />
+              <Sparkles size={18} color="var(--ember)" style={{ animation: 'pulseSubtle 2.5s ease-in-out infinite' }} />
               <span
                 style={{
                   fontFamily: 'var(--font-display)',

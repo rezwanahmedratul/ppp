@@ -52,14 +52,15 @@ export function Slide12() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                   <div
                     style={{
-                      width: '56px',
-                      height: '56px',
-                      borderRadius: '16px',
-                      background: 'var(--paper-2)',
+                      width: '58px',
+                      height: '58px',
+                      borderRadius: '18px',
+                      background: 'var(--ember-soft)',
                       display: 'grid',
                       placeItems: 'center',
                       color: 'var(--ember)',
-                      border: '1.5px solid var(--line)',
+                      border: '1.5px solid rgba(224, 78, 31, 0.2)',
+                      boxShadow: '0 4px 14px var(--ember-subtle)',
                     }}
                   >
                     <Icon size={28} />

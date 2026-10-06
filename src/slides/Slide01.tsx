@@ -24,22 +24,33 @@ export function Slide01() {
           <svg
             style={{
               position: 'absolute',
-              top: '70px',
+              top: '72px',
               left: '100px',
               right: '100px',
               width: 'calc(100% - 200px)',
-              height: '4px',
+              height: '6px',
               zIndex: 0,
+              overflow: 'visible',
             }}
           >
             <line
               x1="0"
-              y1="2"
+              y1="3"
               x2="100%"
-              y2="2"
-              stroke="#D8CAB9"
+              y2="3"
+              stroke="var(--line)"
               strokeWidth="3"
-              strokeDasharray="8 8"
+              opacity="0.5"
+            />
+            <line
+              x1="0"
+              y1="3"
+              x2="100%"
+              y2="3"
+              stroke="var(--ember)"
+              strokeWidth="3.5"
+              className="flow-dash-line"
+              opacity="0.8"
             />
           </svg>
 
@@ -51,32 +62,16 @@ export function Slide01() {
                 <Reveal key={step.label} delay={step.delay} y={20} className="flow-step-node">
                   <div className={`flow-node-card ${i === 2 ? 'highlight' : ''}`}>
                     <div
+                      className="flow-node-icon-box"
                       style={{
-                        width: '56px',
-                        height: '56px',
-                        borderRadius: '16px',
                         background: i === 2 ? 'var(--ember-soft)' : 'var(--paper-2)',
-                        display: 'grid',
-                        placeItems: 'center',
                         color: i === 2 ? 'var(--ember)' : 'var(--ink)',
-                        marginBottom: '10px',
                       }}
                     >
                       <Icon size={30} strokeWidth={2} />
                     </div>
                     {i === 2 && (
-                      <div
-                        style={{
-                          position: 'absolute',
-                          top: '-12px',
-                          right: '-12px',
-                          background: 'var(--ember)',
-                          color: '#fff',
-                          borderRadius: '50%',
-                          padding: '6px',
-                          boxShadow: 'var(--shadow-ember)',
-                        }}
-                      >
+                      <div className="s1-pizza-badge">
                         <Pizza size={18} />
                       </div>
                     )}

@@ -100,16 +100,17 @@ export function Slide09() {
           <Reveal delay={0.75} x={15}>
             <div
               style={{
-                padding: '24px 28px',
-                borderRadius: '20px',
-                background: '#ffffff',
-                border: '2px solid var(--ink)',
-                boxShadow: 'var(--shadow-1)',
+                padding: '26px 30px',
+                borderRadius: '22px',
+                background: 'var(--card-glass)',
+                backdropFilter: 'blur(14px)',
+                border: '1.5px solid var(--card-border)',
+                boxShadow: 'var(--shadow-card)',
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '18px' }}>
                 <CheckCircle2 size={20} color="var(--ember)" />
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', fontWeight: 700, color: 'var(--ember)', letterSpacing: '0.1em' }}>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', fontWeight: 700, color: 'var(--ember)', letterSpacing: '0.12em' }}>
                   CLEAN NORMALIZED ENTITIES
                 </span>
               </div>
@@ -121,12 +122,13 @@ export function Slide09() {
                       style={{
                         padding: '10px 16px',
                         borderRadius: '12px',
-                        background: 'var(--paper-2)',
-                        border: '1.5px solid var(--line)',
+                        background: 'rgba(255, 255, 255, 0.95)',
+                        border: '1.5px solid var(--ink)',
                         fontFamily: 'var(--font-mono)',
                         fontWeight: 700,
                         fontSize: '14px',
                         color: 'var(--ink)',
+                        boxShadow: '0 2px 6px rgba(0,0,0,0.06)',
                       }}
                     >
                       {ent}

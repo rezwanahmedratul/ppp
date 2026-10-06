@@ -121,12 +121,14 @@ export function Slide11() {
                 style={{
                   padding: '18px 24px',
                   borderRadius: '18px',
-                  background: '#ffffff',
-                  border: '1.5px solid var(--line)',
-                  boxShadow: 'var(--shadow-1)',
+                  background: 'var(--card-glass)',
+                  backdropFilter: 'blur(14px)',
+                  border: '1.5px solid var(--card-border)',
+                  boxShadow: 'var(--shadow-card)',
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
+                  transition: 'transform 0.3s var(--ease-spring), box-shadow 0.3s ease',
                 }}
               >
                 <div>

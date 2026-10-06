@@ -84,31 +84,34 @@ export function Slide10() {
             <div
               style={{
                 padding: '24px 28px',
-                borderRadius: '20px',
-                background: '#ffffff',
-                border: '1.5px solid var(--line)',
-                boxShadow: 'var(--shadow-1)',
+                borderRadius: '22px',
+                background: 'var(--card-glass)',
+                backdropFilter: 'blur(14px)',
+                border: '1.5px solid var(--card-border)',
+                boxShadow: 'var(--shadow-card)',
                 display: 'flex',
                 gap: '20px',
                 alignItems: 'flex-start',
+                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
               }}
             >
               <div
                 style={{
-                  width: '48px',
-                  height: '48px',
-                  borderRadius: '12px',
-                  background: 'var(--paper-2)',
+                  width: '52px',
+                  height: '52px',
+                  borderRadius: '16px',
+                  background: 'var(--sand)',
                   display: 'grid',
                   placeItems: 'center',
-                  color: 'var(--brown)',
+                  color: 'var(--brown-deep)',
                   flexShrink: 0,
+                  boxShadow: '0 4px 12px rgba(122, 74, 46, 0.1)',
                 }}
               >
-                <Layers size={24} />
+                <Layers size={26} />
               </div>
               <div>
-                <h4 style={{ fontFamily: 'var(--font-mono)', fontSize: '18px', fontWeight: 700, color: 'var(--ink)' }}>
+                <h4 style={{ fontFamily: 'var(--font-mono)', fontSize: '19px', fontWeight: 700, color: 'var(--ink)' }}>
                   State (Data)
                 </h4>
                 <p style={{ marginTop: '6px', fontSize: '16px', color: 'var(--muted)', lineHeight: 1.5 }}>
@@ -122,31 +125,34 @@ export function Slide10() {
             <div
               style={{
                 padding: '24px 28px',
-                borderRadius: '20px',
-                background: '#ffffff',
-                border: '1.5px solid var(--line)',
-                boxShadow: 'var(--shadow-1)',
+                borderRadius: '22px',
+                background: 'var(--card-glass)',
+                backdropFilter: 'blur(14px)',
+                border: '1.5px solid var(--card-border)',
+                boxShadow: 'var(--shadow-card)',
                 display: 'flex',
                 gap: '20px',
                 alignItems: 'flex-start',
+                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
               }}
             >
               <div
                 style={{
-                  width: '48px',
-                  height: '48px',
-                  borderRadius: '12px',
+                  width: '52px',
+                  height: '52px',
+                  borderRadius: '16px',
                   background: 'var(--ember-soft)',
                   display: 'grid',
                   placeItems: 'center',
                   color: 'var(--ember)',
                   flexShrink: 0,
+                  boxShadow: '0 4px 12px var(--ember-subtle)',
                 }}
               >
-                <Cpu size={24} />
+                <Cpu size={26} />
               </div>
               <div>
-                <h4 style={{ fontFamily: 'var(--font-mono)', fontSize: '18px', fontWeight: 700, color: 'var(--ink)' }}>
+                <h4 style={{ fontFamily: 'var(--font-mono)', fontSize: '19px', fontWeight: 700, color: 'var(--ink)' }}>
                   Behavior (Operations)
                 </h4>
                 <p style={{ marginTop: '6px', fontSize: '16px', color: 'var(--muted)', lineHeight: 1.5 }}>
