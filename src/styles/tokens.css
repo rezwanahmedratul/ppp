@@ -1,0 +1,48 @@
+/* ──────────────────────────────────────────────────────────────
+   Design tokens — warm paper, ember (orange-red), brown & ink.
+   ────────────────────────────────────────────────────────────── */
+:root {
+  /* Surfaces */
+  --paper: #f8f4ee;
+  --paper-2: #f2ebe2;
+  --paper-3: #ebe1d5;
+  --sand: #e6d7c5;
+  --tan: #c9a584;
+
+  /* Browns */
+  --brown: #7a4a2e;
+  --brown-2: #9a6440;
+  --brown-deep: #4a2c1c;
+
+  /* Ember (orange-red) */
+  --ember: #e04e1f;
+  --ember-2: #f2703f;
+  --ember-deep: #b8381a;
+  --ember-soft: #fbe3d7;
+  --ember-glow: rgba(224, 78, 31, 0.22);
+
+  /* Ink */
+  --ink: #16110e;
+  --ink-2: #3a302a;
+  --muted: #7d6e63;
+  --line: #d8cab9;
+  --line-2: #e6dbce;
+
+  /* Typography */
+  --font-display: 'Fraunces Variable', 'Fraunces', Georgia, serif;
+  --font-sans: 'Inter Tight Variable', 'Inter Tight', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, monospace;
+
+  /* Geometry */
+  --stage-w: 1920px;
+  --stage-h: 1080px;
+  --pad-x: 120px;
+  --radius-sm: 10px;
+  --radius: 18px;
+  --radius-lg: 28px;
+
+  /* Elevation */
+  --shadow-1: 0 1px 0 rgba(22, 17, 14, 0.04), 0 8px 24px -12px rgba(74, 44, 28, 0.18);
+  --shadow-2: 0 2px 0 rgba(22, 17, 14, 0.04), 0 24px 60px -24px rgba(74, 44, 28, 0.32);
+  --shadow-ember: 0 18px 50px -18px rgba(224, 78, 31, 0.55);
+}
