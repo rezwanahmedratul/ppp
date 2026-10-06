@@ -83,6 +83,9 @@ jobs:
             exit 1
           fi
 
+          # Ensure image URI is lowercase for Docker / GHCR compatibility
+          LOWER_IMAGE_URI=$(echo "$IMAGE_URI" | tr '[:upper:]' '[:lower:]')
+
           # Setup temporary deploy key with strict permissions
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
@@ -104,8 +107,8 @@ jobs:
             echo "🔑 Logging in to GitHub Container Registry on production..."
             echo "$GITHUB_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin || true
 
-            echo "📦 Pulling latest Docker image: $IMAGE_URI..."
-            docker pull "$IMAGE_URI"
+            echo "📦 Pulling latest Docker image: \$LOWER_IMAGE_URI..."
+            docker pull "$LOWER_IMAGE_URI"
 
             echo "🛑 Stopping previous container (if running)..."
             docker stop ppp-presentation 2>/dev/null || true
@@ -116,7 +119,7 @@ jobs:
               --name ppp-presentation \
               --restart unless-stopped \
               -p $PROD_PORT_MAPPING \
-              "$IMAGE_URI"
+              "$LOWER_IMAGE_URI"
 
             echo "🧹 Pruning old dangling images..."
             docker image prune -f || true

@@ -61,6 +61,9 @@ Each slide is isolated in its own TypeScript component under `src/slides/`:
 ## 🚀 Running Locally
 
 ```bash
+# Install dependencies
+npm install
+
 # Start development server with Hot Module Replacement
 npm run dev
 
@@ -70,3 +73,116 @@ npx tsc -b
 # Build optimized production bundle
 npm run build
 ```
+
+---
+
+## 🐳 Docker & Container Deployment
+
+A multi-stage, high-performance [Dockerfile](file:///root/ppp/Dockerfile) with Nginx 1.27 Alpine runtime and SPA fallback routing is provided.
+
+### 1. Build and Run with Docker CLI
+```bash
+# Build the Docker image
+docker build -t ppp-presentation:latest .
+
+# Run the container (maps host port 8080 to container port 80)
+docker run -d \
+  --name ppp-presentation \
+  --restart unless-stopped \
+  -p 8080:80 \
+  ppp-presentation:latest
+
+# Verify health status
+curl http://localhost:8080/healthz
+```
+
+### 2. Run with Docker Compose
+A ready-to-use [docker-compose.yml](file:///root/ppp/docker-compose.yml) is included:
+```bash
+# Start container in detached mode
+PORT=8080 docker compose up -d
+
+# Check container logs
+docker compose logs -f
+
+# Stop container
+docker compose down
+```
+
+---
+
+## ▲ Deploying to Vercel
+
+The application is fully configured for zero-config Vercel deployment via [vercel.json](file:///root/ppp/vercel.json):
+- Automatic Vite framework detection
+- Single-page application route rewrites to `/index.html`
+- Immutable cache headers for `/assets/*`
+
+### Method 1: GitHub Integration (Recommended)
+1. Push your repository to GitHub.
+2. Go to [vercel.com/new](https://vercel.com/new) and import `ppp`.
+3. Vercel automatically detects Vite settings:
+   - **Framework Preset**: Vite
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
+4. Click **Deploy**.
+
+### Method 2: Vercel CLI
+```bash
+# Deploy preview build
+npx vercel
+
+# Deploy directly to production
+npx vercel --prod
+```
+
+---
+
+## 🔄 CI/CD Pipeline (GitHub Actions + Home Runner + SSH)
+
+Workflow file: [.github/workflows/deploy.yml](file:///root/ppp/.github/workflows/deploy.yml)
+
+### Architecture
+```
+  [git push main]
+        │
+        ▼
+┌──────────────────────────────────────────────┐
+│  GitHub-Hosted Runner (ubuntu-latest)        │
+│  • Builds Docker image with Buildx           │
+│  • Pushes to GitHub Container Registry       │
+│    (ghcr.io/rezwanahmedratul/ppp:latest)     │
+└───────────────────────┬──────────────────────┘
+                        │ triggers next job
+                        ▼
+┌──────────────────────────────────────────────┐
+│  Home Server Runner (runs-on: self-hosted)   │
+│  • Listens for completed image build         │
+│  • Securely connects to Production via SSH   │
+└───────────────────────┬──────────────────────┘
+                        │ SSH command stream
+                        ▼
+┌──────────────────────────────────────────────┐
+│  Production Server                           │
+│  • docker login to ghcr.io                   │
+│  • docker pull latest image                  │
+│  • Restarts ppp-presentation container       │
+│  • Prunes old dangling images                │
+└──────────────────────────────────────────────┘
+```
+
+### Required GitHub Repository Secrets
+
+Go to **Settings** → **Secrets and variables** → **Actions** → **New repository secret** in your GitHub repository and add:
+
+| Secret Name | Description | Example |
+|---|---|---|
+| `PROD_HOST` | Hostname or Public IP address of your production server | `203.0.113.10` or `app.example.com` |
+| `PROD_USER` | SSH user on your production server | `ubuntu` or `root` |
+| `PROD_SSH_KEY` | Private SSH key (ed25519 or RSA) with authorized access | `-----BEGIN OPENSSH PRIVATE KEY-----...` |
+| `PROD_PORT` *(optional)* | SSH port (defaults to `22` if omitted) | `22` |
+| `PROD_PORT_MAPPING` *(optional)* | Host:Container port mapping (defaults to `80:80`) | `80:80` or `8080:80` |
+
+> [!NOTE]
+> Ensure your self-hosted runner on the home server has outbound SSH access to your production server (`PROD_HOST:PROD_PORT`) and Docker is installed on your production server.
+
