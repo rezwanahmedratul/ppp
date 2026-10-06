@@ -15,81 +15,111 @@ export function Slide11() {
       title="Class *≠* Object"
       lede="A class is an abstract template; objects are concrete instances instantiated in memory."
     >
-      <div style={{ display: 'grid', gridTemplateColumns: '1.3fr 1fr', gap: '48px', height: '100%', alignItems: 'center' }}>
-        {/* Left: Visual Class -> creates -> Objects */}
-        <Diagram
-          width={760}
-          height={500}
-          lines={
-            <>
-              {/* Connector from Class bottom to fork */}
-              <Connector points={[[380, 200], [380, 260]]} width={3} delay={0.6} />
-              {/* Horizontal fork */}
-              <Connector points={[[180, 260], [580, 260]]} width={3} delay={0.7} />
-              {/* Drop to Car #1 & Car #2 */}
-              <Connector
-                points={[[180, 260], [180, 310]]}
-                arrow="end"
-                width={3}
-                delay={0.8}
-                label={{ text: 'creates', x: 260, y: 280 }}
-              />
-              <Connector
-                points={[[580, 260], [580, 310]]}
-                arrow="end"
-                width={3}
-                delay={0.8}
-                label={{ text: 'creates', x: 500, y: 280 }}
-              />
-            </>
-          }
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '1.15fr 0.85fr',
+          gap: '56px',
+          height: '100%',
+          alignItems: 'stretch',
+          position: 'relative',
+        }}
+      >
+        {/* Left Column: Visual Class -> creates -> Objects */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minWidth: 0,
+            minHeight: 0,
+            width: '100%',
+            height: '100%',
+            position: 'relative',
+          }}
         >
-          {/* Class: CAR (Blueprint style) */}
-          <UmlClass
-            name="CAR"
-            attrs={['- color : string', '- speed : int']}
-            methods={['+ drive(speed) : void']}
-            x={240}
-            y={20}
-            w={280}
-            size="md"
-            variant="blueprint"
-            stereotype="Blueprint"
-            delay={0.3}
-          />
+          <Diagram
+            width={740}
+            height={480}
+            lines={
+              <>
+                {/* Connector from Class bottom to fork */}
+                <Connector points={[[380, 210], [380, 255]]} width={3} delay={0.6} />
+                {/* Horizontal fork */}
+                <Connector points={[[180, 255], [580, 255]]} width={3} delay={0.7} />
+                {/* Drop to Car #1 & Car #2 */}
+                <Connector
+                  points={[[180, 255], [180, 305]]}
+                  arrow="end"
+                  width={3}
+                  delay={0.8}
+                  label={{ text: 'creates', x: 235, y: 280 }}
+                />
+                <Connector
+                  points={[[580, 255], [580, 305]]}
+                  arrow="end"
+                  width={3}
+                  delay={0.8}
+                  label={{ text: 'creates', x: 525, y: 280 }}
+                />
+              </>
+            }
+          >
+            {/* Class: CAR (Blueprint style) */}
+            <UmlClass
+              name="CAR"
+              attrs={['- color : string', '- speed : int']}
+              methods={['+ drive(speed) : void']}
+              x={240}
+              y={20}
+              w={280}
+              size="md"
+              variant="blueprint"
+              stereotype="Blueprint"
+              delay={0.3}
+            />
 
-          {/* Object 1: Car #1 */}
-          <UmlClass
-            name="car1 : Car"
-            attrs={['color = "Red"', 'speed = 80 km/h']}
-            x={60}
-            y={310}
-            w={240}
-            size="md"
-            variant="instance"
-            delay={0.85}
-          />
+            {/* Object 1: Car #1 */}
+            <UmlClass
+              name="car1 : Car"
+              attrs={['color = "Red"', 'speed = 80 km/h']}
+              x={60}
+              y={305}
+              w={240}
+              size="md"
+              variant="instance"
+              delay={0.85}
+            />
 
-          {/* Object 2: Car #2 */}
-          <UmlClass
-            name="car2 : Car"
-            attrs={['color = "Blue"', 'speed = 60 km/h']}
-            x={460}
-            y={310}
-            w={240}
-            size="md"
-            variant="instance"
-            delay={0.95}
-          />
-        </Diagram>
+            {/* Object 2: Car #2 */}
+            <UmlClass
+              name="car2 : Car"
+              attrs={['color = "Blue"', 'speed = 60 km/h']}
+              x={460}
+              y={305}
+              w={240}
+              size="md"
+              variant="instance"
+              delay={0.95}
+            />
+          </Diagram>
+        </div>
 
-        {/* Right: Clean Definitions Grid */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        {/* Right Column: Clean Definitions Grid */}
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            gap: '16px',
+            minWidth: 0,
+          }}
+        >
           {definitions.map((def, i) => (
             <Reveal key={def.title} delay={0.5 + i * 0.12} y={15}>
               <div
                 style={{
-                  padding: '20px 24px',
+                  padding: '18px 24px',
                   borderRadius: '18px',
                   background: '#ffffff',
                   border: '1.5px solid var(--line)',
