@@ -171,18 +171,20 @@ Workflow file: [.github/workflows/deploy.yml](file:///root/ppp/.github/workflows
 └──────────────────────────────────────────────┘
 ```
 
-### Required GitHub Repository Secrets
+### GitHub Repository Secrets
 
-Go to **Settings** → **Secrets and variables** → **Actions** → **New repository secret** in your GitHub repository and add:
+Go to **Settings** → **Secrets and variables** → **Actions** → **New repository secret** in your GitHub repository:
 
-| Secret Name | Description | Example |
-|---|---|---|
-| `PROD_HOST` | Hostname or Public IP address of your production server | `203.0.113.10` or `app.example.com` |
-| `PROD_USER` | SSH user on your production server | `ubuntu` or `root` |
-| `PROD_SSH_KEY` | Private SSH key (ed25519 or RSA) with authorized access | `-----BEGIN OPENSSH PRIVATE KEY-----...` |
-| `PROD_PORT` *(optional)* | SSH port (defaults to `22` if omitted) | `22` |
-| `PROD_PORT_MAPPING` *(optional)* | Host:Container port mapping (defaults to `80:80`) | `80:80` or `8080:80` |
+| Secret Name | Required? | Description | Default / Example |
+|---|---|---|---|
+| `PROD_HOST` | **Yes** | Hostname or Public IP address of your production server | `203.0.113.10` or `app.example.com` |
+| `PROD_USER` | **Yes** | SSH user on your production server | `ubuntu` or `root` |
+| `PROD_DIR` | No | Target project directory on production server | `/opt/ppp` (or custom e.g. `~/ppp`) |
+| `PROD_PORT` | No | SSH port on your production server | `22` |
+| `PROD_PORT_MAPPING` | No | Host:Container port mapping | `80:80` (or `8080:80`) |
+| `PROD_SSH_KEY` | No *(Optional)* | Only needed if the runner does not already have an authorized SSH key | `-----BEGIN OPENSSH PRIVATE KEY-----...` |
 
-> [!NOTE]
-> Ensure your self-hosted runner on the home server has outbound SSH access to your production server (`PROD_HOST:PROD_PORT`) and Docker is installed on your production server.
+> [!TIP]
+> **Pre-configured Home Server SSH Key**: Since the SSH key of your home-server GitHub Action runner is already added to the production server's `authorized_keys`, you **do not need** to configure `PROD_SSH_KEY` in GitHub secrets. The runner will automatically use its existing key to authenticate.
+
 

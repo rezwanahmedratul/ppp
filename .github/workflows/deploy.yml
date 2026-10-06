@@ -69,6 +69,7 @@ jobs:
           PROD_HOST: ${{ secrets.PROD_HOST }}
           PROD_USER: ${{ secrets.PROD_USER }}
           PROD_PORT: ${{ secrets.PROD_PORT || '22' }}
+          PROD_DIR: ${{ secrets.PROD_DIR || '/opt/ppp' }}
           PROD_SSH_KEY: ${{ secrets.PROD_SSH_KEY }}
           PROD_PORT_MAPPING: ${{ secrets.PROD_PORT_MAPPING || '80:80' }}
           IMAGE_URI: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
@@ -77,56 +78,88 @@ jobs:
         run: |
           set -euo pipefail
 
-          if [ -z "$PROD_HOST" ] || [ -z "$PROD_USER" ] || [ -z "$PROD_SSH_KEY" ]; then
-            echo "❌ ERROR: One or more required secrets are missing!"
-            echo "Please set PROD_HOST, PROD_USER, and PROD_SSH_KEY in your GitHub Repository Secrets."
+          if [ -z "$PROD_HOST" ] || [ -z "$PROD_USER" ]; then
+            echo "❌ ERROR: Required secrets missing!"
+            echo "Please configure PROD_HOST and PROD_USER in GitHub Repository Secrets."
             exit 1
           fi
 
           # Ensure image URI is lowercase for Docker / GHCR compatibility
           LOWER_IMAGE_URI=$(echo "$IMAGE_URI" | tr '[:upper:]' '[:lower:]')
 
-          # Setup temporary deploy key with strict permissions
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
-          DEPLOY_KEY_FILE="$(mktemp ~/.ssh/deploy_key_XXXXXX)"
-          echo "$PROD_SSH_KEY" > "$DEPLOY_KEY_FILE"
-          chmod 600 "$DEPLOY_KEY_FILE"
+          # Configure SSH command arguments
+          SSH_ARGS=(-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p "$PROD_PORT")
 
-          trap 'rm -f "$DEPLOY_KEY_FILE"' EXIT
+          # If an explicit private key is provided in secrets, use it;
+          # otherwise use the runner machine's pre-configured SSH key.
+          if [ -n "${PROD_SSH_KEY:-}" ]; then
+            mkdir -p ~/.ssh
+            chmod 700 ~/.ssh
+            DEPLOY_KEY_FILE="$(mktemp ~/.ssh/deploy_key_XXXXXX)"
+            echo "$PROD_SSH_KEY" > "$DEPLOY_KEY_FILE"
+            chmod 600 "$DEPLOY_KEY_FILE"
+            trap 'rm -f "$DEPLOY_KEY_FILE"' EXIT
+            SSH_ARGS+=(-i "$DEPLOY_KEY_FILE")
+            echo "🔑 Using PROD_SSH_KEY from repository secrets."
+          else
+            echo "🔑 Using pre-authorized SSH key from self-hosted runner machine."
+          fi
 
-          echo "🚀 Connecting to production server ($PROD_HOST:$PROD_PORT) via SSH from Home Server Runner..."
+          echo "🚀 Connecting to $PROD_USER@$PROD_HOST:$PROD_PORT from Home Server Runner..."
 
-          ssh -i "$DEPLOY_KEY_FILE" \
-              -o StrictHostKeyChecking=no \
-              -o UserKnownHostsFile=/dev/null \
-              -p "$PROD_PORT" \
-              "$PROD_USER@$PROD_HOST" "bash -s" << EOF
+          ssh "${SSH_ARGS[@]}" "$PROD_USER@$PROD_HOST" \
+            "PROD_DIR='$PROD_DIR' LOWER_IMAGE_URI='$LOWER_IMAGE_URI' PROD_PORT_MAPPING='$PROD_PORT_MAPPING' GITHUB_TOKEN='$GITHUB_TOKEN' GITHUB_ACTOR='$GITHUB_ACTOR' bash -s" << 'EOF'
             set -euo pipefail
 
-            echo "🔑 Logging in to GitHub Container Registry on production..."
+            echo "📁 Ensuring production directory exists: $PROD_DIR..."
+            mkdir -p "$PROD_DIR"
+            cd "$PROD_DIR"
+
+            echo "🔑 Authenticating with GitHub Container Registry..."
             echo "$GITHUB_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin || true
 
-            echo "📦 Pulling latest Docker image: \$LOWER_IMAGE_URI..."
+            echo "📦 Pulling latest Docker image: $LOWER_IMAGE_URI..."
             docker pull "$LOWER_IMAGE_URI"
 
-            echo "🛑 Stopping previous container (if running)..."
-            docker stop ppp-presentation 2>/dev/null || true
-            docker rm ppp-presentation 2>/dev/null || true
+            echo "📝 Updating production docker-compose.yml in $PROD_DIR..."
+            cat << COMPOSE_FILE > docker-compose.yml
+services:
+  presentation:
+    image: $LOWER_IMAGE_URI
+    container_name: ppp-presentation
+    restart: unless-stopped
+    ports:
+      - "$PROD_PORT_MAPPING"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/healthz"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+COMPOSE_FILE
 
-            echo "▶️ Starting new ppp-presentation container..."
-            docker run -d \
-              --name ppp-presentation \
-              --restart unless-stopped \
-              -p $PROD_PORT_MAPPING \
-              "$LOWER_IMAGE_URI"
+            echo "🛑 Refreshing container..."
+            if docker compose version &>/dev/null; then
+              docker compose up -d --force-recreate
+            elif command -v docker-compose &>/dev/null; then
+              docker-compose up -d --force-recreate
+            else
+              echo "ℹ️ Docker compose not installed; using docker run..."
+              docker stop ppp-presentation 2>/dev/null || true
+              docker rm ppp-presentation 2>/dev/null || true
+              docker run -d \
+                --name ppp-presentation \
+                --restart unless-stopped \
+                -p "$PROD_PORT_MAPPING" \
+                "$LOWER_IMAGE_URI"
+            fi
 
-            echo "🧹 Pruning old dangling images..."
+            echo "🧹 Cleaning up dangling images..."
             docker image prune -f || true
 
-            echo "✅ Container deployment succeeded!"
+            echo "✅ Container deployment succeeded in $PROD_DIR!"
             sleep 2
             docker ps --filter "name=ppp-presentation" --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Ports}}"
-          EOF
+EOF
 
           echo "🎉 Production deployment finished successfully!"
