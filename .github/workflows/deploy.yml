@@ -107,59 +107,25 @@ jobs:
 
           echo "🚀 Connecting to $PROD_USER@$PROD_HOST:$PROD_PORT from Home Server Runner..."
 
-          ssh "${SSH_ARGS[@]}" "$PROD_USER@$PROD_HOST" \
-            "PROD_DIR='$PROD_DIR' LOWER_IMAGE_URI='$LOWER_IMAGE_URI' PROD_PORT_MAPPING='$PROD_PORT_MAPPING' GITHUB_TOKEN='$GITHUB_TOKEN' GITHUB_ACTOR='$GITHUB_ACTOR' bash -s" << 'EOF'
-            set -euo pipefail
+          # Construct deployment script to execute on remote production host
+          REMOTE_CMD="set -euo pipefail; "
+          REMOTE_CMD+="echo '📁 Ensuring production directory exists: $PROD_DIR...'; "
+          REMOTE_CMD+="mkdir -p '$PROD_DIR'; "
+          REMOTE_CMD+="cd '$PROD_DIR'; "
+          REMOTE_CMD+="echo '🔑 Authenticating with GitHub Container Registry...'; "
+          REMOTE_CMD+="echo '$GITHUB_TOKEN' | docker login ghcr.io -u '$GITHUB_ACTOR' --password-stdin || true; "
+          REMOTE_CMD+="echo '📦 Pulling latest Docker image: $LOWER_IMAGE_URI...'; "
+          REMOTE_CMD+="docker pull '$LOWER_IMAGE_URI'; "
+          REMOTE_CMD+="echo '📝 Updating production docker-compose.yml in $PROD_DIR...'; "
+          REMOTE_CMD+="printf 'services:\n  presentation:\n    image: %s\n    container_name: ppp-presentation\n    restart: unless-stopped\n    ports:\n      - \"%s\"\n    healthcheck:\n      test: [\"CMD\", \"wget\", \"-qO-\", \"http://127.0.0.1/healthz\"]\n      interval: 30s\n      timeout: 3s\n      retries: 3\n      start_period: 5s\n' '$LOWER_IMAGE_URI' '$PROD_PORT_MAPPING' > docker-compose.yml; "
+          REMOTE_CMD+="echo '🛑 Refreshing container...'; "
+          REMOTE_CMD+="if docker compose version &>/dev/null; then docker compose up -d --force-recreate; elif command -v docker-compose &>/dev/null; then docker-compose up -d --force-recreate; else echo 'ℹ️ Using docker run...'; docker stop ppp-presentation 2>/dev/null || true; docker rm ppp-presentation 2>/dev/null || true; docker run -d --name ppp-presentation --restart unless-stopped -p '$PROD_PORT_MAPPING' '$LOWER_IMAGE_URI'; fi; "
+          REMOTE_CMD+="echo '🧹 Cleaning up dangling images...'; "
+          REMOTE_CMD+="docker image prune -f || true; "
+          REMOTE_CMD+="echo '✅ Container deployment succeeded in $PROD_DIR!'; "
+          REMOTE_CMD+="sleep 2; "
+          REMOTE_CMD+="docker ps --filter 'name=ppp-presentation' --format 'table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Ports}}'"
 
-            echo "📁 Ensuring production directory exists: $PROD_DIR..."
-            mkdir -p "$PROD_DIR"
-            cd "$PROD_DIR"
-
-            echo "🔑 Authenticating with GitHub Container Registry..."
-            echo "$GITHUB_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin || true
-
-            echo "📦 Pulling latest Docker image: $LOWER_IMAGE_URI..."
-            docker pull "$LOWER_IMAGE_URI"
-
-            echo "📝 Updating production docker-compose.yml in $PROD_DIR..."
-            cat << COMPOSE_FILE > docker-compose.yml
-services:
-  presentation:
-    image: $LOWER_IMAGE_URI
-    container_name: ppp-presentation
-    restart: unless-stopped
-    ports:
-      - "$PROD_PORT_MAPPING"
-    healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/healthz"]
-      interval: 30s
-      timeout: 3s
-      retries: 3
-      start_period: 5s
-COMPOSE_FILE
-
-            echo "🛑 Refreshing container..."
-            if docker compose version &>/dev/null; then
-              docker compose up -d --force-recreate
-            elif command -v docker-compose &>/dev/null; then
-              docker-compose up -d --force-recreate
-            else
-              echo "ℹ️ Docker compose not installed; using docker run..."
-              docker stop ppp-presentation 2>/dev/null || true
-              docker rm ppp-presentation 2>/dev/null || true
-              docker run -d \
-                --name ppp-presentation \
-                --restart unless-stopped \
-                -p "$PROD_PORT_MAPPING" \
-                "$LOWER_IMAGE_URI"
-            fi
-
-            echo "🧹 Cleaning up dangling images..."
-            docker image prune -f || true
-
-            echo "✅ Container deployment succeeded in $PROD_DIR!"
-            sleep 2
-            docker ps --filter "name=ppp-presentation" --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Ports}}"
-EOF
+          ssh "${SSH_ARGS[@]}" "$PROD_USER@$PROD_HOST" "$REMOTE_CMD"
 
           echo "🎉 Production deployment finished successfully!"
